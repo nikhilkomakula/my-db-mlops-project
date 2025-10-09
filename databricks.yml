@@ -1,0 +1,51 @@
+# databricks auth login --host https://dbc-672f1dd0-100d.cloud.databricks.com
+
+bundle:
+  name: marvel-characters
+
+artifacts:
+  default:
+    type: whl
+    build: uv build
+    path: .
+
+variables:
+  git_sha:
+    description: git_sha
+    default: abcd
+  branch:
+    description: branch
+    default: main
+  schedule_pause_status:
+    description: schedule pause status
+    default: PAUSED
+
+targets:
+  dev:
+    default: true
+    mode: development
+    workspace:
+      host: https://dbc-672f1dd0-100d.cloud.databricks.com
+      root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.target}/${bundle.name}
+      profile: dbc-672f1dd0-100d
+    variables:
+      schedule_pause_status: PAUSED
+
+  acc:
+    presets:
+      name_prefix: 'acc_'
+    workspace:
+      host: https://dbc-672f1dd0-100d.cloud.databricks.com
+      root_path: /Shared/.bundle/${bundle.target}/${bundle.name}
+      profile: dbc-672f1dd0-100d
+    variables:
+      schedule_pause_status: PAUSED
+
+  prd:
+    mode: production
+    workspace:
+      host: https://dbc-672f1dd0-100d.cloud.databricks.com
+      root_path: /Shared/.bundle/${bundle.target}/${bundle.name}
+      profile: dbc-672f1dd0-100d
+    variables:
+      schedule_pause_status: PAUSED # normally UNPAUSED
