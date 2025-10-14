@@ -1,5 +1,8 @@
 """Data processing module for Marvel characters dataset."""
 
+import time
+
+import numpy as np
 import pandas as pd
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import current_timestamp, to_utc_timestamp
@@ -143,3 +146,71 @@ class DataProcessor:
             f"ALTER TABLE {self.config.catalog_name}.{self.config.schema_name}.mc_test_set "
             "SET TBLPROPERTIES (delta.enableChangeDataFeed = true);"
         )
+
+
+def generate_synthetic_data(df: pd.DataFrame, drift: bool = False, num_rows: int = 500) -> pd.DataFrame:
+    """Generate synthetic Marvel character data matching input DataFrame distributions with optional drift.
+
+    Creates artificial dataset replicating statistical patterns from source columns including numeric,
+    categorical, and datetime types. Supports intentional data drift for specific features when enabled.
+
+    :param df: Source DataFrame containing original data distributions
+    :param drift: Flag to activate synthetic data drift injection
+    :param num_rows: Number of synthetic records to generate
+    :return: DataFrame containing generated synthetic data
+    """
+    synthetic_data = pd.DataFrame()
+
+    for column in df.columns:
+        if column == "Id":
+            continue
+
+        if pd.api.types.is_numeric_dtype(df[column]):
+            if column in {"Height", "Weight"}:  # Handle physical attributes
+                synthetic_data[column] = np.random.normal(df[column].mean(), df[column].std(), num_rows)
+                # Ensure positive values for physical attributes
+                synthetic_data[column] = np.maximum(0.1, synthetic_data[column])
+            else:
+                synthetic_data[column] = np.random.normal(df[column].mean(), df[column].std(), num_rows)
+
+        elif pd.api.types.is_categorical_dtype(df[column]) or pd.api.types.is_object_dtype(df[column]):
+            synthetic_data[column] = np.random.choice(
+                df[column].unique(), num_rows, p=df[column].value_counts(normalize=True)
+            )
+
+        elif pd.api.types.is_datetime64_any_dtype(df[column]):
+            min_date, max_date = df[column].min(), df[column].max()
+            synthetic_data[column] = pd.to_datetime(
+                np.random.randint(min_date.value, max_date.value, num_rows)
+                if min_date < max_date
+                else [min_date] * num_rows
+            )
+
+        else:
+            synthetic_data[column] = np.random.choice(df[column], num_rows)
+
+    # Convert relevant numeric columns to appropriate types
+    float_columns = {"Height", "Weight"}
+    for col in float_columns.intersection(df.columns):
+        synthetic_data[col] = synthetic_data[col].astype(np.float64)
+
+    timestamp_base = int(time.time() * 1000)
+    synthetic_data["Id"] = [str(timestamp_base + i) for i in range(num_rows)]
+
+    if drift:
+        # Skew the physical attributes to introduce drift
+        drift_features = ["Height", "Weight"]
+        for feature in drift_features:
+            if feature in synthetic_data.columns:
+                synthetic_data[feature] = synthetic_data[feature] * 1.5
+
+        # Introduce bias in categorical features
+        if "Gender" in synthetic_data.columns:
+            synthetic_data["Gender"] = np.random.choice(["Male", "Female"], num_rows, p=[0.7, 0.3])
+
+    return synthetic_data
+
+
+def generate_test_data(df: pd.DataFrame, drift: bool = False, num_rows: int = 100) -> pd.DataFrame:
+    """Generate test data matching input DataFrame distributions with optional drift."""
+    return generate_synthetic_data(df, drift, num_rows)
