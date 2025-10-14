@@ -1,0 +1,42 @@
+{
+    "info": {
+        "artifact_uri": "dbfs:/databricks/mlflow-tracking/2228204236580524/9df1576492e9418ab43cefbba55b56dc/artifacts",
+        "end_time": 1760095100742,
+        "experiment_id": "2228204236580524",
+        "lifecycle_stage": "active",
+        "run_id": "9df1576492e9418ab43cefbba55b56dc",
+        "run_name": "marvel-demo-run",
+        "start_time": 1760095099195,
+        "status": "FINISHED",
+        "user_id": ""
+    },
+    "data": {
+        "metrics": {
+            "metric1": 1.0,
+            "metric2": 2.0
+        },
+        "params": {
+            "type": "marvel_demo"
+        },
+        "tags": {
+            "git_sha": "1234567890abcd",
+            "mlflow.databricks.cluster.id": "1010-111009-ijo8xdcx-v2n",
+            "mlflow.databricks.cluster.info": "{\"cluster_name\":\"\",\"spark_version\":\"17.2.x-photon-scala2.13\",\"autotermination_minutes\":120}",
+            "mlflow.databricks.cluster.libraries": "{\"installable\":[],\"redacted\":[]}",
+            "mlflow.note.content": "marvel character prediction demo run",
+            "mlflow.runColor": "#da4c4c",
+            "mlflow.runName": "marvel-demo-run",
+            "mlflow.source.name": "/Volumes/My Data/My GitHub/my-db-mlops-project/.venv/lib/python3.12/site-packages/ipykernel_launcher.py",
+            "mlflow.source.type": "LOCAL",
+            "mlflow.user": "nikhil.komakula@gmail.com",
+            "mlflow.artifacts.spn": "/WorkspaceInternal/Mlflow/Artifacts/2228204236580524/Runs/9df1576492e9418ab43cefbba55b56dc/"
+        }
+    },
+    "inputs": {
+        "model_inputs": [],
+        "dataset_inputs": []
+    },
+    "outputs": {
+        "model_outputs": []
+    }
+}
