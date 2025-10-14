@@ -1,1 +1,1 @@
-# Makes tests a Python package
+"""Test package for marvel-characters project."""

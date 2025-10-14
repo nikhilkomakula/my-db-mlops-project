@@ -39,4 +39,18 @@ display(df.head(5))
 # COMMAND ----------
 dataprocessor = DataProcessor(df=df, config=config, spark=spark)
 dataprocessor.preprocess()
+logger.info("Data preprocessing completed.")
+
+# COMMAND ----------
+X_train, X_test = dataprocessor.split_data()
+logger.info(f"Train shape: {X_train.shape}, Test shape: {X_test.shape}")
+
+# COMMAND ----------
+dataprocessor.save_to_catalog(X_train, X_test)
+logger.info("Data saved to catalog successfully.")
+
+# COMMAND ----------
+dataprocessor.enable_change_data_feed()
+logger.info("Change data feed enabled on the Delta table.")
+
 # COMMAND ----------

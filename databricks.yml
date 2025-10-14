@@ -1,7 +1,10 @@
-# databricks auth login --host https://dbc-672f1dd0-100d.cloud.databricks.com
+# databricks auth login --host https://dbc-f122dc18-1b68.cloud.databricks.com
 
 bundle:
   name: marvel-characters
+
+include:
+  - resources/*
 
 artifacts:
   default:
@@ -25,9 +28,9 @@ targets:
     default: true
     mode: development
     workspace:
-      host: https://dbc-672f1dd0-100d.cloud.databricks.com
+      host: https://dbc-f122dc18-1b68.cloud.databricks.com
       root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.target}/${bundle.name}
-      profile: dbc-672f1dd0-100d
+      profile: dbc-f122dc18-1b68
     variables:
       schedule_pause_status: PAUSED
 
@@ -35,17 +38,17 @@ targets:
     presets:
       name_prefix: 'acc_'
     workspace:
-      host: https://dbc-672f1dd0-100d.cloud.databricks.com
-      root_path: /Shared/.bundle/${bundle.target}/${bundle.name}
-      profile: dbc-672f1dd0-100d
+      host: https://dbc-f122dc18-1b68.cloud.databricks.com
+      root_path: /Shared/nikhilkomakula/.bundle/${bundle.target}/${bundle.name}
+      profile: dbc-f122dc18-1b68
     variables:
       schedule_pause_status: PAUSED
 
   prd:
     mode: production
     workspace:
-      host: https://dbc-672f1dd0-100d.cloud.databricks.com
-      root_path: /Shared/.bundle/${bundle.target}/${bundle.name}
-      profile: dbc-672f1dd0-100d
+      host: https://dbc-f122dc18-1b68.cloud.databricks.com
+      root_path: /Shared/nikhilkomakula/.bundle/${bundle.target}/${bundle.name}
+      profile: dbc-f122dc18-1b68
     variables:
       schedule_pause_status: PAUSED # normally UNPAUSED
