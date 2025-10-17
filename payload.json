@@ -1,0 +1,30 @@
+{
+  "dataframe_split": {
+    "columns": [
+      "Height",
+      "Weight",
+      "Universe",
+      "Identity",
+      "Gender",
+      "Marital_Status",
+      "Teams",
+      "Origin",
+      "Magic",
+      "Mutant"
+    ],
+    "data": [
+      [
+        1.83,
+        65.32,
+        "Earth-616",
+        "Public",
+        "Female",
+        true,
+        1,
+        "Human",
+        0,
+        0
+      ]
+    ]
+  }
+}

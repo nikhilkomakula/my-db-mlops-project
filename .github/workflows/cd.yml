@@ -33,7 +33,7 @@ jobs:
         run: |
           mkdir -p ~/.databricks
           cat > ~/.databrickscfg << EOF
-          [marvelous]
+          [dbc-f122dc18-1b68]
           host = ${{ vars.DATABRICKS_HOST }}
           client_id = ${{ secrets.DATABRICKS_CLIENT_ID }}
           client_secret = ${{ secrets.DATABRICKS_CLIENT_SECRET }}
